@@ -1,0 +1,17 @@
+#!/bin/bash
+
+conda install -c conda-forge xeus-cling
+
+cd ~/src
+g++ get-ticket.cpp  -o get-ticket
+g++ show-ticket.cpp -o show-ticket
+
+mv get-ticket  ~/bin/get-ticket
+mv show-ticket ~/bin/show-ticket
+
+chmod 755 ~/bin/get-ticket
+chmod 755 ~/bin/show-ticket
+chmod 755 ~/bin/everest.sh
+
+cd ~/bin
+./everest.sh
