@@ -16,18 +16,19 @@ int main()
 	string pathFreeQuests = path + "free-quests.txt";
 	string pathQuests = path + "quests.txt";
 
-	// хранение вопросов
-	vector<string> questions;
-
+	
 	// флаги успешного окончания работы с файлами
 	bool successfullyQuests = false;
 	bool successfullyFreeBlitz = false;
 	bool successfullyFreeQuests = false;
 
-	// считывание вопросов из файла quests.txt
-	ifstream fin;
-	fin.open(pathQuests);
+	ifstream fin; // для чтения файлов
+	ofstream fout; // для записи в файлы
 
+	// хранение вопросов из quests.txt
+	vector<string> questions;
+	// считывание вопросов из файла quests.txt
+	fin.open(pathQuests);
 	if (fin.fail()) {
 		cout << "Произошла ошибка при открытии файла с вопросами!" << endl;
 	}
@@ -42,52 +43,84 @@ int main()
 	fin.close();
 
 
-	// заполняем файл free-quests.txt от 1 по числу вопросов в файле 
+	// хранение свободных вопросов 
+	vector<int> freeQuests;
+
 	if (successfullyQuests) {
-		ofstream fout;
-		fout.open(pathFreeQuests);
-		if (fout.fail()) {
+
+		fin.open(pathFreeQuests);
+		// обрабатываем случай, если файл не существует
+		if (fin.fail()) {
+
+			fin.close();
 			cout << "Отсутствует файл free-quests.txt \n Создаётся файл free-quests.txt" << endl;
 			ofstream(pathFreeQuests);
 
-			// делаем повторную попытку открытия файла
+			// открываем файл для записи
 			fout.open(pathFreeQuests);
+
+			// заполняем файл free-quests.txt от 1 по числу вопросов в файле 
+			for (int i = 0; i < questions.size(); i++) {
+				fout << i + 1 << endl;
+			}
+
+			fout.close();
+
+			// открываем повторно для чтения
+			fin.open(pathFreeQuests);
 		}
 
-		for (int i = 0; i < questions.size(); i++) {
-			fout << i + 1 << endl;
+		while (getline(fin, numberQuestion)) {
+			freeQuests.push_back(numberQuestion);
 		}
 
 		successfullyFreeQuests = true;
-		fout.close();
+
+		fin.close();
 	}
 	else {
 		cout << "Невозможно работать с файлом free-quests.txt, так как неудачно считаны вопросы из файла quests.txt" << endl;
 	}
 
-
-	// заполняем файл free-blitz.txt всеми парами вида (1..4) (1..16)
+	// хранение свободных вопросов для блиц опроса
+	vector<string> freeBlitz;
+	
 	if (successfullyFreeQuests) {
-		ofstream fout;
-		fout.open(pathFreeBlitz);
-		if (fout.fail()) {
+		
+		fin.open(pathFreeBlitz);
+		// обрабатываем случай, если файл не существует
+		if (fin.fail()) {
+
+			fin.close();
 			cout << "Отсутствует файл free-blitz.txt \n Создаётся файл free-blitz.txt" << endl;
 			ofstream(pathFreeBlitz);
 
-			// делаем повторную попытку открытия файла
+			// открываем файл для записи
 			fout.open(pathFreeBlitz);
-		}
 
-		int countTickets = 4;
-		int countQuestions = 16;
-		for (int i = 0; i < countTickets; i++) {
-			for (int j = 0; j < countQuestions; j++) {
-				fout << (i + 1) + " " + (j + 1) << endl;
+			// заполняем файл free-blitz.txt всеми парами вида (1..4) (1..16)
+			int countTickets = 4;
+			int countQuestions = 16;
+			for (int i = 0; i < countTickets; i++) {
+				for (int j = 0; j < countQuestions; j++) {
+					fout << (i + 1) + " " + (j + 1) << endl;
+				}
 			}
+
+			fout.close();
+
+			// открываем повторно для чтения
+			fin.open(pathFreeBlitz);
 		}
 
-		successfullyFreeBlitz
-			fout.close();
+
+		while (getline(fin, numberTicketsAndQuestion)) {
+			freeBlitz.push_back(numberTicketsAndQuestion);
+		}
+
+		successfullyFreeBlitz = true;
+
+		fin.close();
 	}
 	else {
 		cout << "Невозможно работать с файлом free-blitz.txt, так как неудачно считаны вопросы из файла quests.txt" << endl;
