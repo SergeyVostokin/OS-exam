@@ -5,6 +5,64 @@
 
 using namespace std;
 
+
+// метод проверки на существование файла
+bool fileExists(string path) {
+
+	fstream fst;
+	bool result = false;
+
+	fst.open(path);
+
+	if (!fst.fail()) {
+		result = true;
+		fst.close();
+	}
+
+	return result;
+}
+
+// метод для построчного заполнения файла 
+void writeFile(string path, vector<string> data) {
+
+	fstream fst;
+	fst.open(path);
+
+	if (fst.is_open()) {
+		for (int i = 0; i < data.size(); i++) {
+			fst << data[i] << endl;
+		}
+
+		fst.close();
+	}
+	else {
+		cout << "Файл c заданным путём: " << path << " не открыт или не существует!" << endl;
+	}
+}
+
+// метод для построчного считывания файла
+vector<string> readFile(string path) {
+
+	vector<string> result;
+
+	fstream fst;
+	fst.open(path);
+
+	if (fst.is_open()) {
+		string data;
+		while (getline(fst, data)) {
+			result.push_back(data);
+		}
+
+		fst.close();
+	}
+	else {
+		cout << "Файл c заданным путём: " << path << " не открыт или не существует!" << endl;
+	}
+
+	return result;
+}
+
 int main()
 {
 	setlocale(LC_ALL, "Russian");
@@ -19,58 +77,51 @@ int main()
 	
 	// _____Начало блока подготовки файлов к работе и считывание вопросов из quests.txt_____
 	
-	// флаги успешной проверки и инициализации(при необходимости) файлов
+	// флаги успешной создания(при необходимости) и заполнения файлов
 	bool successfullyQuests = false;
 	bool successfullyFreeBlitz = false;
 	bool successfullyFreeQuests = false;
-
-	ifstream fin; // для чтения файлов
-	ofstream fout; // для записи в файлы
 
 	
 	vector<string> questions; // хранение вопросов из quests.txt
 
 	// считывание вопросов из файла quests.txt
-	fin.open(pathQuests);
-	if (fin.fail()) {
-		cout << "Произошла ошибка при открытии файла с вопросами!" << endl;
-	}
-	else {
-		string question;
-		while (getline(fin, question)) {
-			questions.push_back(question);
-		}
-		cout << "Вопросы успешно извлечены из файла!" << endl;
+	if (fileExists(pathQuests)) {
+		questions = readFile(pathQuests);
 		successfullyQuests = true;
 	}
-	fin.close();
+	else {
+		cout << "Произошла ошибка при открытии файла с вопросами!" << endl;
+	}
+	
+	
+	// подготовка данных для заполнения файлов
+	// для free-quests.txt
+	vector<string> freeQuests;
+	for (int i = 0; i < questions.size(); i++) {
+		freeQuests.push_back(to_string(i + 1);
+	}
 
+	// для free-blitz.txt
+	int countTickets = 4;
+	int countBlitzQuests = 16;
+	vector<string> freeBlitz;
+	for (int i = 0; i < countTickets; i++) {
+		for (int j = 0; j < countBlitzQuests) {
+			freeBlitz.push_back(to_string(i) + to_string(j));
+		}
+	}
 
-	// проверка на существование файла free-quests.txt и его инициализация
+	// проверка на существование файла free-quests.txt и его заполнения
 	if (successfullyQuests) {
 
-		fin.open(pathFreeQuests);
-
 		// обрабатываем случай, если файл не существует
-		if (fin.fail()) {
-
-			fin.close();
+		if (!fileExists(pathFreeQuests)) {
 			cout << "Отсутствует файл free-quests.txt \n Создаётся файл free-quests.txt" << endl;
 			ofstream(pathFreeQuests);
-
-			// открываем файл для записи
-			fout.open(pathFreeQuests);
-
-			// заполняем файл free-quests.txt от 1 по числу вопросов в файле 
-			for (int i = 0; i < questions.size(); i++) {
-				fout << i + 1 << endl;
-			}
-
-			fout.close();
 		}
-
-		fin.close();
-
+		
+		writeFile(pathFreeQuests, freeQuests);
 		successfullyFreeQuests = true;
 	}
 	else {
@@ -78,35 +129,18 @@ int main()
 	}
 
 	
-	// проверка на существование файла free-blitz.txt и его инициализация
+
+	// проверка на существование файла free-blitz.txt и его заполнения
 	if (successfullyFreeQuests) {
-		
-		fin.open(pathFreeBlitz);
 
 		// обрабатываем случай, если файл не существует
-		if (fin.fail()) {
-
-			fin.close();
+		if (!fileExists(pathFreeQuests)) {
 			cout << "Отсутствует файл free-blitz.txt \n Создаётся файл free-blitz.txt" << endl;
 			ofstream(pathFreeBlitz);
-
-			// открываем файл для записи
-			fout.open(pathFreeBlitz);
-
-			// заполняем файл free-blitz.txt всеми парами вида (1..4) (1..16)
-			int countTickets = 4;
-			int countQuestions = 16;
-			for (int i = 0; i < countTickets; i++) {
-				for (int j = 0; j < countQuestions; j++) {
-					fout << (i + 1) + " " + (j + 1) << endl;
-				}
-			}
-
-			fout.close();
 		}
-
-		fin.close();
-
+		
+		
+		writeFile(pathFreeBlitz, freeBlitz);
 		successfullyFreeBlitz = true;
 	}
 	else {
