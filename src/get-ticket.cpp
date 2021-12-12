@@ -17,7 +17,9 @@ int main()
 	string pathQuests = path + "quests.txt";
 
 	
-	// флаги успешного окончания работы с файлами
+	// _____Начало блока подготовки файлов к работе и считывание вопросов из quests.txt_____
+	
+	// флаги успешной проверки и инициализации(при необходимости) файлов
 	bool successfullyQuests = false;
 	bool successfullyFreeBlitz = false;
 	bool successfullyFreeQuests = false;
@@ -25,8 +27,9 @@ int main()
 	ifstream fin; // для чтения файлов
 	ofstream fout; // для записи в файлы
 
-	// хранение вопросов из quests.txt
-	vector<string> questions;
+	
+	vector<string> questions; // хранение вопросов из quests.txt
+
 	// считывание вопросов из файла quests.txt
 	fin.open(pathQuests);
 	if (fin.fail()) {
@@ -43,12 +46,11 @@ int main()
 	fin.close();
 
 
-	// хранение свободных вопросов 
-	vector<int> freeQuests;
-
+	// проверка на существование файла free-quests.txt и его инициализация
 	if (successfullyQuests) {
 
 		fin.open(pathFreeQuests);
+
 		// обрабатываем случай, если файл не существует
 		if (fin.fail()) {
 
@@ -65,29 +67,22 @@ int main()
 			}
 
 			fout.close();
-
-			// открываем повторно для чтения
-			fin.open(pathFreeQuests);
 		}
-
-		while (getline(fin, numberQuestion)) {
-			freeQuests.push_back(numberQuestion);
-		}
-
-		successfullyFreeQuests = true;
 
 		fin.close();
+
+		successfullyFreeQuests = true;
 	}
 	else {
 		cout << "Невозможно работать с файлом free-quests.txt, так как неудачно считаны вопросы из файла quests.txt" << endl;
 	}
 
-	// хранение свободных вопросов для блиц опроса
-	vector<string> freeBlitz;
 	
+	// проверка на существование файла free-blitz.txt и его инициализация
 	if (successfullyFreeQuests) {
 		
 		fin.open(pathFreeBlitz);
+
 		// обрабатываем случай, если файл не существует
 		if (fin.fail()) {
 
@@ -108,21 +103,16 @@ int main()
 			}
 
 			fout.close();
-
-			// открываем повторно для чтения
-			fin.open(pathFreeBlitz);
 		}
-
-
-		while (getline(fin, numberTicketsAndQuestion)) {
-			freeBlitz.push_back(numberTicketsAndQuestion);
-		}
-
-		successfullyFreeBlitz = true;
 
 		fin.close();
+
+		successfullyFreeBlitz = true;
 	}
 	else {
 		cout << "Невозможно работать с файлом free-blitz.txt, так как неудачно считаны вопросы из файла quests.txt" << endl;
 	}
+
+	// _____Конец блока подготовки файлов к работе и считывание вопросов из quests.txt_____
+
 }
