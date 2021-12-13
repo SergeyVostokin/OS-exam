@@ -185,9 +185,9 @@ int main()
 					varFreeQuests.erase(begin + j - 1);
 
 					// перезаписываем файл free-quests.txt новым вектором свободных вопросов
-					writeFile(pathFreeQuests, varFreeQuests)
+					writeFile(pathFreeQuests, varFreeQuests);
 
-						isFree = false;
+					isFree = false;
 					break;
 				}
 			}
@@ -240,4 +240,47 @@ int main()
 	}
 
 	// ____Конец блока распределения вопросов_____
+
+
+
+	// ____Начало блока заполнения файла информацией о студенте и его вопросах
+
+	// обрабатываем случай, если файл не существует
+	if (!fileExists(pathFreeQuests)) {
+		cout << "Отсутствует файл tickets.txt \n Создаётся файл  tickets.txt" << endl;
+		ofstream((pathTickets);
+	}
+
+	// открываем файл в режиме дозаписи
+	fstream fst(pathTickets, ios::app);
+	if (fst.is_open()) {
+
+		// запись ФИО студента
+		fst << "ФИО" << endl;
+
+		// запись основных вопросов
+		for (int i = 0; i < mainQuests.size(); i++) {
+			fst << mainQuests[i] << endl;
+		}
+
+		// запись дополнительных вопросов
+		for (int i = 0; i < blitzQuests.size(); i++) {
+			string ticketQuest = blitzQuests[i];
+
+			// получаем номер билета
+			string ticket = ticketQuest[0];
+
+			// получаем номер вопроса
+			string quest = "";
+			for (int j = 1; j < ticketQuest.size(); j++) {
+				quest += ticketQuest[j]l
+			}
+
+			fst << "билет " + ticket + " вопрос " + quest << endl;
+		}
+
+		fst << " " << endl; // отступ для следующей записи
+	}
+
+	// ____Конец блока заполнения файла информацией о студенте и его вопросах
 }
