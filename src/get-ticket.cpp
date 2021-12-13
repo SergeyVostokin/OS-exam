@@ -164,27 +164,71 @@ int main()
 			// если их нет, то заполняем файл заново
 			writeFile(pathFreeQuests, fixFreeQuests);
 		}
-		else {
+		
+		bool isFree = true;
+
+		while (isFree) {
+			string randNumberQuest = to_string(1 + rand() % 16); // генерация от 1 до 16
+
+			for (int j = 0; j < varFreeQuests.size(); j++) {
+
+				// ищём совпадение по свободному вопросу
+				if (stricmp(randNumberQuest, varFreeQuests[j]) == 0) {
+
+					// если нашли, то добавляем его
+					mainQuests.push_back(questions[randNumberQuest - 1]);
+
+					// берём начальный элемент
+					auto begin = varFreeQuests.cbegin();
+					// удаляем элемент из вектора свободных вопросов
+					varFreeQuests.erase(begin + j - 1);
+
+					// перезаписываем файл free-quests.txt новым вектором свободных вопросов
+					writeFile(pathFreeQuests, varFreeQuests)
+
+					isFree = false;
+					break;
+				}
+			}
+			
+		}
+
+
+		vector<string> blitzQuests; // хранение дополнительных вопросов с билетами
+
+		int countBlitzQuests = 2;
+
+		for (int i = 0; i < countBlitzQuests; i++) {
+			vector<string> varFreeBlitz = readFile(pathFreeBlitz);
+
+			// проверка на наличие свободных вопросов и билетов
+			if (varFreeBlitz.empty()) {
+				// если их нет, то заполняем файл заново
+				writeFile(pathFreeBlitz, fixFreeBlitz);
+			}
+
 			bool isFree = true;
 
 			while (isFree) {
+				string randNumberTicket = to_string(1 + rand() % 4); // генерация от 1 до 4
 				string randNumberQuest = to_string(1 + rand() % 16); // генерация от 1 до 16
+				string randTicketQuest = randNumberTicket + randNumberQuest;
 
-				for (int j = 0; j < varFreeQuests.size(); j++) {
+				for (int j = 0; j < varFreeBlitz.size(); j++) {
 
-					// ищём совпадение по свободному вопросу
-					if (stricmp(randNumberQuest, varFreeQuests[j]) == 0) {
+					// ищём совпадение по свободному вопросу и билету
+					if (stricmp(randTicketQuest, varFreeBlitz[j]) == 0) {
 
-						// если нашли, то добавляем его
-						mainQuests.push_back(questions[randNumberQuest - 1]);
+						// если нашли, то добавляем их
+						blitzQuests.push_back(randTicketQuest);
 
 						// берём начальный элемент
-						auto begin = varFreeQuests.cbegin();
-						// удаляем элемент из вектора свободных вопросов
-						varFreeQuests.erase(begin + stoi(randNumberQuest) - 2);
+						auto begin = varFreeBlitz.cbegin();
+						// удаляем элемент из вектора свободных вопросов и билетов
+						varFreeBlitz.erase(begin + j - 1);
 
-						// перезаписываем файл free-quests.txt новым вектором свободных вопросов
-						writeFile(pathFreeQuests, varFreeQuests)
+						// перезаписываем файл free-blitz.txt новым вектором свободных вопросов и билетов
+						writeFile(pathFreeBlitz, varFreeBlitz);
 
 						isFree = false;
 						break;
@@ -192,5 +236,6 @@ int main()
 				}
 			}
 		}
+			
 	}
 }
