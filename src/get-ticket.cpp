@@ -73,16 +73,17 @@ int main()
 	string pathFreeBlitz = path + "free-blitz.txt";
 	string pathFreeQuests = path + "free-quests.txt";
 	string pathQuests = path + "quests.txt";
+	string pathTickets = path + "tickets.txt";
 
-	
+
 	// _____Начало блока подготовки файлов к работе и считывание вопросов из quests.txt_____
-	
+
 	// флаги успешной создания(при необходимости) и заполнения файлов
 	bool successfullyQuests = false;
 	bool successfullyFreeBlitz = false;
 	bool successfullyFreeQuests = false;
 
-	
+
 	vector<string> questions; // хранение вопросов из quests.txt
 
 	// считывание вопросов из файла quests.txt
@@ -93,8 +94,8 @@ int main()
 	else {
 		cout << "Произошла ошибка при открытии файла с вопросами!" << endl;
 	}
-	
-	
+
+
 	// подготовка данных для заполнения файлов
 	// для free-quests.txt
 	vector<string> fixFreeQuests;
@@ -120,7 +121,7 @@ int main()
 			cout << "Отсутствует файл free-quests.txt \n Создаётся файл free-quests.txt" << endl;
 			ofstream(pathFreeQuests);
 		}
-		
+
 		writeFile(pathFreeQuests, fixFreeQuests);
 		successfullyFreeQuests = true;
 	}
@@ -128,7 +129,7 @@ int main()
 		cout << "Невозможно работать с файлом free-quests.txt, так как неудачно считаны вопросы из файла quests.txt" << endl;
 	}
 
-	
+
 
 	// проверка на существование файла free-blitz.txt и его заполнения
 	if (successfullyFreeQuests) {
@@ -138,8 +139,8 @@ int main()
 			cout << "Отсутствует файл free-blitz.txt \n Создаётся файл free-blitz.txt" << endl;
 			ofstream(pathFreeBlitz);
 		}
-		
-		
+
+
 		writeFile(pathFreeBlitz, fixFreeBlitz);
 		successfullyFreeBlitz = true;
 	}
@@ -153,7 +154,7 @@ int main()
 	// ____Начало блока распределения вопросов_____
 
 	vector<string> mainQuests; // хранение основных вопросов
-	
+
 	int countMainQuests = 2;
 
 	for (int i = 0; i < countMainQuests; i++) {
@@ -164,7 +165,7 @@ int main()
 			// если их нет, то заполняем файл заново
 			writeFile(pathFreeQuests, fixFreeQuests);
 		}
-		
+
 		bool isFree = true;
 
 		while (isFree) {
@@ -173,7 +174,7 @@ int main()
 			for (int j = 0; j < varFreeQuests.size(); j++) {
 
 				// ищём совпадение по свободному вопросу
-				if (stricmp(randNumberQuest, varFreeQuests[j]) == 0) {
+				if (randNumberQuest == varFreeQuests[j]) {
 
 					// если нашли, то добавляем его
 					mainQuests.push_back(questions[randNumberQuest - 1]);
@@ -186,11 +187,11 @@ int main()
 					// перезаписываем файл free-quests.txt новым вектором свободных вопросов
 					writeFile(pathFreeQuests, varFreeQuests)
 
-					isFree = false;
+						isFree = false;
 					break;
 				}
 			}
-			
+
 		}
 
 
@@ -217,7 +218,7 @@ int main()
 				for (int j = 0; j < varFreeBlitz.size(); j++) {
 
 					// ищём совпадение по свободному вопросу и билету
-					if (stricmp(randTicketQuest, varFreeBlitz[j]) == 0) {
+					if (randTicketQuest == varFreeBlitz[j]) {
 
 						// если нашли, то добавляем их
 						blitzQuests.push_back(randTicketQuest);
@@ -236,6 +237,7 @@ int main()
 				}
 			}
 		}
-			
 	}
+
+	// ____Конец блока распределения вопросов_____
 }
