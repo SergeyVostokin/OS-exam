@@ -5,7 +5,7 @@
 
 using namespace std;
 
-
+// !!!! ПРОДЕБАЖИТЬ МЕСТА ЗАПОЛНЕНИЯ ФАЙЛОВ ПРИ ОТБОРЕ БИЛЕТОВ
 // метод проверки на существование файла
 bool fileExists(string path) {
 
@@ -68,7 +68,7 @@ int main()
 	setlocale(LC_ALL, "Russian");
 
 	// относительный путь к каталогу txt файлов
-	string path = "../data/";
+	string path = "C:/Users/Игорь Николаевич/Desktop/3 курс/5_семестр/Операционные системы/OS-exam/data/";
 
 	string pathFreeBlitz = path + "free-blitz.txt";
 	string pathFreeQuests = path + "free-quests.txt";
@@ -100,7 +100,7 @@ int main()
 	// для free-quests.txt
 	vector<string> fixFreeQuests;
 	for (int i = 0; i < questions.size(); i++) {
-		freeQuests.push_back(to_string(i + 1);
+		fixFreeQuests.push_back(to_string(i + 1));
 	}
 
 	// для free-blitz.txt
@@ -108,12 +108,12 @@ int main()
 	int countBlitzQuests = 16;
 	vector<string> fixFreeBlitz;
 	for (int i = 0; i < countTickets; i++) {
-		for (int j = 0; j < countBlitzQuests) {
-			freeBlitz.push_back(to_string(i) + to_string(j));
+		for (int j = 0; j < countBlitzQuests; j++) {
+			fixFreeBlitz.push_back(to_string(i + 1) + to_string(j + 1));
 		}
 	}
 
-	// проверка на существование файла free-quests.txt и его заполнения
+	// проверка на существование файла free-quests.txt и создание при отсутствии
 	if (successfullyQuests) {
 
 		// обрабатываем случай, если файл не существует
@@ -122,7 +122,7 @@ int main()
 			ofstream(pathFreeQuests);
 		}
 
-		writeFile(pathFreeQuests, fixFreeQuests);
+		//writeFile(pathFreeQuests, fixFreeQuests);
 		successfullyFreeQuests = true;
 	}
 	else {
@@ -131,7 +131,7 @@ int main()
 
 
 
-	// проверка на существование файла free-blitz.txt и его заполнения
+	// проверка на существование файла free-blitz.txt и создание при отсутствии
 	if (successfullyFreeQuests) {
 
 		// обрабатываем случай, если файл не существует
@@ -141,7 +141,7 @@ int main()
 		}
 
 
-		writeFile(pathFreeBlitz, fixFreeBlitz);
+		//writeFile(pathFreeBlitz, fixFreeBlitz);
 		successfullyFreeBlitz = true;
 	}
 	else {
@@ -150,6 +150,7 @@ int main()
 
 	// _____Конец блока подготовки файлов к работе и считывание вопросов из quests.txt_____
 
+	
 
 	// ____Начало блока распределения вопросов_____
 
@@ -164,25 +165,27 @@ int main()
 		if (varFreeQuests.empty()) {
 			// если их нет, то заполняем файл заново
 			writeFile(pathFreeQuests, fixFreeQuests);
+			varFreeQuests = readFile(pathFreeQuests);
 		}
 
 		bool isFree = true;
 
 		while (isFree) {
-			string randNumberQuest = to_string(1 + rand() % 16); // генерация от 1 до 16
+			string randNumberQuest = to_string(1 + rand() % fixFreeQuests.size()); // генерация от 1 до ...
 
 			for (int j = 0; j < varFreeQuests.size(); j++) {
 
 				// ищём совпадение по свободному вопросу
 				if (randNumberQuest == varFreeQuests[j]) {
+					cout << "__________" << endl;
 
 					// если нашли, то добавляем его
-					mainQuests.push_back(questions[randNumberQuest - 1]);
+					mainQuests.push_back(questions[j]);
 
-					// берём начальный элемент
-					auto begin = varFreeQuests.cbegin();
+				
 					// удаляем элемент из вектора свободных вопросов
-					varFreeQuests.erase(begin + j - 1);
+					// !!!!! ЛИШНИЕ ЭЛЕМЕНТЫ В КОНЦЕ ВЕКТОРА
+					varFreeQuests.erase(varFreeQuests.cbegin() + j);
 
 					// перезаписываем файл free-quests.txt новым вектором свободных вопросов
 					writeFile(pathFreeQuests, varFreeQuests);
@@ -191,64 +194,65 @@ int main()
 					break;
 				}
 			}
+		}
+	}
 
+	
+	vector<string> blitzQuests; // хранение дополнительных вопросов с билетами
+
+	countBlitzQuests = 2;
+
+	for (int i = 0; i < countBlitzQuests; i++) {
+		vector<string> varFreeBlitz = readFile(pathFreeBlitz);
+
+		// проверка на наличие свободных вопросов и билетов
+		if (varFreeBlitz.empty()) {
+			// если их нет, то заполняем файл заново
+			writeFile(pathFreeBlitz, fixFreeBlitz);
+			varFreeBlitz = readFile(pathFreeBlitz);
 		}
 
+		bool isFree = true;
 
-		vector<string> blitzQuests; // хранение дополнительных вопросов с билетами
+		while (isFree) {
+			string randNumberTicket = to_string(1 + rand() % 4); // генерация от 1 до 4
+			string randNumberQuest = to_string(1 + rand() % 16); // генерация от 1 до 16
+			string randTicketQuest = randNumberTicket + randNumberQuest;
 
-		int countBlitzQuests = 2;
+			for (int j = 0; j < varFreeBlitz.size(); j++) {
 
-		for (int i = 0; i < countBlitzQuests; i++) {
-			vector<string> varFreeBlitz = readFile(pathFreeBlitz);
+				// ищём совпадение по свободному вопросу и билету
+				if (randTicketQuest == varFreeBlitz[j]) {
 
-			// проверка на наличие свободных вопросов и билетов
-			if (varFreeBlitz.empty()) {
-				// если их нет, то заполняем файл заново
-				writeFile(pathFreeBlitz, fixFreeBlitz);
-			}
+					// если нашли, то добавляем их
+					blitzQuests.push_back(randTicketQuest);
 
-			bool isFree = true;
+					// удаляем элемент из вектора свободных вопросов и билетов
+					// !!!!! ЛИШНИЕ ЭЛЕМЕНТЫ В КОНЦЕ ВЕКТОРА
+					varFreeBlitz.erase(varFreeBlitz.cbegin() + j);
 
-			while (isFree) {
-				string randNumberTicket = to_string(1 + rand() % 4); // генерация от 1 до 4
-				string randNumberQuest = to_string(1 + rand() % 16); // генерация от 1 до 16
-				string randTicketQuest = randNumberTicket + randNumberQuest;
+					// перезаписываем файл free-blitz.txt новым вектором свободных вопросов и билетов
+					writeFile(pathFreeBlitz, varFreeBlitz);
 
-				for (int j = 0; j < varFreeBlitz.size(); j++) {
-
-					// ищём совпадение по свободному вопросу и билету
-					if (randTicketQuest == varFreeBlitz[j]) {
-
-						// если нашли, то добавляем их
-						blitzQuests.push_back(randTicketQuest);
-
-						// берём начальный элемент
-						auto begin = varFreeBlitz.cbegin();
-						// удаляем элемент из вектора свободных вопросов и билетов
-						varFreeBlitz.erase(begin + j - 1);
-
-						// перезаписываем файл free-blitz.txt новым вектором свободных вопросов и билетов
-						writeFile(pathFreeBlitz, varFreeBlitz);
-
-						isFree = false;
-						break;
-					}
+					isFree = false;
+					break;
 				}
 			}
 		}
 	}
+	
+	
 
 	// ____Конец блока распределения вопросов_____
 
 
-
+	
 	// ____Начало блока заполнения файла информацией о студенте и его вопросах
 
 	// обрабатываем случай, если файл не существует
 	if (!fileExists(pathFreeQuests)) {
 		cout << "Отсутствует файл tickets.txt \n Создаётся файл  tickets.txt" << endl;
-		ofstream((pathTickets);
+		ofstream(pathTickets);
 	}
 
 	// открываем файл в режиме дозаписи
@@ -268,19 +272,20 @@ int main()
 			string ticketQuest = blitzQuests[i];
 
 			// получаем номер билета
-			string ticket = ticketQuest[0];
+			char ticket = ticketQuest[0];
 
 			// получаем номер вопроса
 			string quest = "";
 			for (int j = 1; j < ticketQuest.size(); j++) {
-				quest += ticketQuest[j]l
+				quest += ticketQuest[j];
 			}
 
-			fst << "билет " + ticket + " вопрос " + quest << endl;
+			fst << "билет " << ticket << " вопрос " << quest << endl;
 		}
 
 		fst << " " << endl; // отступ для следующей записи
 	}
 
 	// ____Конец блока заполнения файла информацией о студенте и его вопросах
+	
 }
