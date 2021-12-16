@@ -5,7 +5,6 @@
 
 using namespace std;
 
-// !!!! ПРОДЕБАЖИТЬ МЕСТА ЗАПОЛНЕНИЯ ФАЙЛОВ ПРИ ОТБОРЕ БИЛЕТОВ
 // метод проверки на существование файла
 bool fileExists(string path) {
 
@@ -25,19 +24,18 @@ bool fileExists(string path) {
 // метод для построчного заполнения файла 
 void writeFile(string path, vector<string> data) {
 
-	fstream fst;
+	ofstream fst;
 	fst.open(path);
 
 	if (fst.is_open()) {
 		for (int i = 0; i < data.size(); i++) {
 			fst << data[i] << endl;
 		}
-
-		fst.close();
 	}
 	else {
 		cout << "Файл c заданным путём: " << path << " не открыт или не существует!" << endl;
 	}
+	fst.close();
 }
 
 // метод для построчного считывания файла
@@ -45,7 +43,7 @@ vector<string> readFile(string path) {
 
 	vector<string> result;
 
-	fstream fst;
+	ifstream fst;
 	fst.open(path);
 
 	if (fst.is_open()) {
@@ -66,6 +64,9 @@ vector<string> readFile(string path) {
 int main()
 {
 	setlocale(LC_ALL, "Russian");
+
+	// настройка рандома для уникальности
+	srand(time(0));
 
 	// относительный путь к каталогу txt файлов
 	string path = "C:/Users/Игорь Николаевич/Desktop/3 курс/5_семестр/Операционные системы/OS-exam/data/";
@@ -162,12 +163,13 @@ int main()
 		vector<string> varFreeQuests = readFile(pathFreeQuests);
 
 		// проверка на наличие свободных номеров
-		if (varFreeQuests.empty()) {
+		if (varFreeQuests.empty() || varFreeQuests[0] == "") {
 			// если их нет, то заполняем файл заново
 			writeFile(pathFreeQuests, fixFreeQuests);
 			varFreeQuests = readFile(pathFreeQuests);
 		}
 
+		
 		bool isFree = true;
 
 		while (isFree) {
@@ -176,16 +178,13 @@ int main()
 			for (int j = 0; j < varFreeQuests.size(); j++) {
 
 				// ищём совпадение по свободному вопросу
-				if (randNumberQuest == varFreeQuests[j]) {
-					cout << "__________" << endl;
-
+				if (randNumberQuest.compare(varFreeQuests[j]) == 0) {
+					
 					// если нашли, то добавляем его
-					mainQuests.push_back(questions[j]);
+					mainQuests.push_back(questions[stoi(randNumberQuest) - 1]);
 
-				
 					// удаляем элемент из вектора свободных вопросов
-					// !!!!! ЛИШНИЕ ЭЛЕМЕНТЫ В КОНЦЕ ВЕКТОРА
-					varFreeQuests.erase(varFreeQuests.cbegin() + j);
+					varFreeQuests.erase(varFreeQuests.begin() + j);
 
 					// перезаписываем файл free-quests.txt новым вектором свободных вопросов
 					writeFile(pathFreeQuests, varFreeQuests);
@@ -201,12 +200,12 @@ int main()
 	vector<string> blitzQuests; // хранение дополнительных вопросов с билетами
 
 	countBlitzQuests = 2;
-
+	
 	for (int i = 0; i < countBlitzQuests; i++) {
 		vector<string> varFreeBlitz = readFile(pathFreeBlitz);
 
 		// проверка на наличие свободных вопросов и билетов
-		if (varFreeBlitz.empty()) {
+		if (varFreeBlitz.empty() || varFreeBlitz[0] == "") {
 			// если их нет, то заполняем файл заново
 			writeFile(pathFreeBlitz, fixFreeBlitz);
 			varFreeBlitz = readFile(pathFreeBlitz);
@@ -222,14 +221,13 @@ int main()
 			for (int j = 0; j < varFreeBlitz.size(); j++) {
 
 				// ищём совпадение по свободному вопросу и билету
-				if (randTicketQuest == varFreeBlitz[j]) {
+				if (randTicketQuest.compare(varFreeBlitz[j]) == 0) {
 
 					// если нашли, то добавляем их
 					blitzQuests.push_back(randTicketQuest);
 
 					// удаляем элемент из вектора свободных вопросов и билетов
-					// !!!!! ЛИШНИЕ ЭЛЕМЕНТЫ В КОНЦЕ ВЕКТОРА
-					varFreeBlitz.erase(varFreeBlitz.cbegin() + j);
+					varFreeBlitz.erase(varFreeBlitz.begin() + j);
 
 					// перезаписываем файл free-blitz.txt новым вектором свободных вопросов и билетов
 					writeFile(pathFreeBlitz, varFreeBlitz);
@@ -242,7 +240,6 @@ int main()
 	}
 	
 	
-
 	// ____Конец блока распределения вопросов_____
 
 
@@ -287,5 +284,4 @@ int main()
 	}
 
 	// ____Конец блока заполнения файла информацией о студенте и его вопросах
-	
 }
