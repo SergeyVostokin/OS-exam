@@ -1,16 +1,13 @@
-
-#include <locale.h>
+ï»¿#include <locale.h>
 #include <string>
 #include <time.h>
 #include <string>
 #include <vector>
 #include <fstream>
 #include <iostream>
-
 using namespace std;
 
-string const dataPath = "D:\\source\\OS-exam\\data\\";
-
+string const dataPath = "../data/";
 int const studentData = 5;
 
 vector<int> findIndexNode(vector<string> arr, string node) {
@@ -25,7 +22,7 @@ vector<int> findIndexNode(vector<string> arr, string node) {
 }
 
 vector<string> readFile(string path) {
-
+	
 	vector<string> result;
 
 	ifstream fst;
@@ -40,7 +37,7 @@ vector<string> readFile(string path) {
 		fst.close();
 	}
 	else {
-		cout << "”àéë ñ äàííûì ïóòåì:" << path << "íå îòêðûò èëè íå ñóùåñòâóåò!" << endl;
+		cout << "Ð¤Ð°Ð¹Ð» c Ð·Ð°Ð´Ð°Ð½Ð½Ñ‹Ð¼ Ð¿ÑƒÑ‚Ñ‘Ð¼: " << path << " Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚ Ð¸Ð»Ð¸ Ð½Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚!" << endl;
 	}
 
 	return result;
@@ -52,7 +49,7 @@ int main()
 
 	string pathTickets = dataPath + "tickets.txt";
 
-	string studentName = "”ˆŽ";
+	string studentName = "Ð¤Ð˜Ðž";
 
 	vector<string> filesRows = readFile(pathTickets);
 
@@ -71,7 +68,7 @@ int main()
 			}
 		}
 		else {
-			cout << "èëåòîâ íå îáíàðóæåíî" << endl;
+			cout << "Ð‘Ð¸Ð»ÐµÑ‚Ð¾Ð² Ð½Ðµ Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð¾" << endl;
 		}
 	}
 
