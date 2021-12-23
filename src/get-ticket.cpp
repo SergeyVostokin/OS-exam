@@ -61,21 +61,27 @@ vector<string> readFile(string path) {
 	return result;
 }
 
-int main()
+int main(int argc, char** argv)
 {
 	setlocale(LC_ALL, "Russian");
-
-	cout << "Введите ФИО на латинице:" << endl;
-	string student;
-	cin >> student;
 
 	// настройка рандома для уникальности
 	srand(time(0));
 
-	
-	// относительный путь к каталогу txt файлов
-	string path = "../data/";
+    // получаем параметры с консоли
 
+	string path = argv[2];
+	int length = path.length();
+
+	// дополняем путь при необходимости
+	if (path[length - 1] != '/') {
+		path += "/";
+	}
+
+
+	string file = argv[1];
+
+	string pathName = path + file;
 	string pathFreeBlitz = path + "free-blitz.txt";
 	string pathFreeQuests = path + "free-quests.txt";
 	string pathQuests = path + "quests.txt";
@@ -87,6 +93,9 @@ int main()
 	bool successfullyQuests = false;
 	bool successfullyFreeBlitz = false;
 	bool successfullyFreeQuests = false;
+
+	// берём имя из file (результат метода - вектор, берём элемент под 1 индексом)
+	string student = readFile(pathName)[0];
 
 
 	vector<string> questions; // хранение вопросов из quests.txt
@@ -291,4 +300,5 @@ int main()
 	else {
 		cout << "(!) Для получения вопросов не подготовлены основные файлы!" << endl;
 	}
+	
 }
