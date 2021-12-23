@@ -264,6 +264,7 @@ int main(int argc, char** argv)
 			fout.close();
 		}
 
+		int number = 0;
 		// открываем файл в режиме дозаписи
 		fstream fst(pathTickets, ios::app);
 		if (fst.is_open()) {
@@ -273,11 +274,14 @@ int main(int argc, char** argv)
 
 			// запись основных вопросов
 			for (int i = 0; i < mainQuests.size(); i++) {
-				fst << mainQuests[i] << endl;
+				number++;
+				fst << to_string(number) + ") " << mainQuests[i] << endl;
 			}
 
 			// запись дополнительных вопросов
 			for (int i = 0; i < blitzQuests.size(); i++) {
+				number++;
+
 				string ticketQuest = blitzQuests[i];
 
 				// получаем номер билета
@@ -289,13 +293,21 @@ int main(int argc, char** argv)
 					quest += ticketQuest[j];
 				}
 
-				fst << "билет " << ticket << " вопрос " << quest << endl;
+				fst << to_string(number) + ") " << "билет " << ticket << " вопрос " << quest << endl;
 			}
 
 			fst << " " << endl; // отступ для следующей записи
 		}
 
 		// ____Конец блока заполнения файла информацией о студенте и его вопросах
+
+
+		// вывод в консоль вопросов
+		for (int i = 0; i < mainQuests.size(); i++) {
+			cout << (i + 1) + ") " << mainQuests[i] << endl;
+		}
+		cout << "дополнительные вопросы 3) 4) объявляются экзаменатором после ответа на вопросы 1) 2)" << endl;
+
 	}
 	else {
 		cout << "(!) Для получения вопросов не подготовлены основные файлы!" << endl;

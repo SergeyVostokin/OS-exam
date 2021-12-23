@@ -48,6 +48,7 @@ int main(int argc, char** argv)
 
 	// получаем параметры с консоли
 
+	string file = argv[1];
 	string path = argv[2];
 	int length = path.length();
 
@@ -56,7 +57,7 @@ int main(int argc, char** argv)
 		path += "/";
 	}
 
-	string studentName = argv[1];
+	string studentName = readFile(path + file)[0];
 
 	string pathTickets = path + "tickets.txt";
 
