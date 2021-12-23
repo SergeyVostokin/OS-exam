@@ -7,7 +7,6 @@
 #include <iostream>
 using namespace std;
 
-string const dataPath = "../data/";
 int const studentData = 5;
 
 vector<int> findIndexNode(vector<string> arr, string node) {
@@ -43,11 +42,23 @@ vector<string> readFile(string path) {
 	return result;
 }
 
-int main()
+int main(int argc, char** argv)
 {
 	setlocale(LC_ALL, "Russian");
 
-	string pathTickets = dataPath + "tickets.txt";
+	// получаем параметры с консоли
+
+	string path = argv[2];
+	int length = path.length();
+
+	// дополняем путь при необходимости
+	if (path[length - 1] != '/') {
+		path += "/";
+	}
+
+	string file = argv[1];
+
+	string pathTickets = path + file;
 
 	cout << "Введите ФИО на латинице:" << endl;
 	string studentName;
