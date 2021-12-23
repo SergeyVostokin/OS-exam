@@ -65,15 +65,16 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 
-	// настройка рандома для уникальности
-	srand(time(0));
-
 	cout << "Введите ФИО на латинице:" << endl;
 	string student;
 	cin >> student;
 
+	// настройка рандома для уникальности
+	srand(time(0));
+
+	
 	// относительный путь к каталогу txt файлов
-	string path = "../data/ ";
+	string path = "../data/";
 
 	string pathFreeBlitz = path + "free-blitz.txt";
 	string pathFreeQuests = path + "free-quests.txt";
