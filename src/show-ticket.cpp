@@ -13,7 +13,7 @@ vector<int> findIndexNode(vector<string> arr, string node) {
 	vector<int> indexs;
 	for (int i = 0; i < arr.size(); i++)
 	{
-		if(arr[i]._Equal(node)) {
+		if(arr[i] == node) {
 			indexs.push_back(i);
 		}
 	}
