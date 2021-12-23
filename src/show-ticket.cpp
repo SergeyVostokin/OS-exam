@@ -56,13 +56,9 @@ int main(int argc, char** argv)
 		path += "/";
 	}
 
-	string file = argv[1];
+	string studentName = argv[1];
 
-	string pathTickets = path + file;
-
-	cout << "Введите ФИО на латинице:" << endl;
-	string studentName;
-	cin >> studentName;
+	string pathTickets = path + "tickets.txt";
 
 	vector<string> filesRows = readFile(pathTickets);
 
