@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 
-string const dataPath = "../data/";
+string const dataPath = "..\\data\\";
 int const studentData = 5;
 
 vector<int> findIndexNode(vector<string> arr, string node) {
