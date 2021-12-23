@@ -68,14 +68,17 @@ int main()
 	// настройка рандома для уникальности
 	srand(time(0));
 
+	cout << "Введите ФИО на латинице:" << endl;
+	string student;
+	cin >> student;
+
 	// относительный путь к каталогу txt файлов
-	string path = "../data/";
+	string path = "../data/ ";
 
 	string pathFreeBlitz = path + "free-blitz.txt";
 	string pathFreeQuests = path + "free-quests.txt";
 	string pathQuests = path + "quests.txt";
 	string pathTickets = path + "tickets.txt";
-
 
 	// _____Начало блока подготовки файлов к работе и считывание вопросов из quests.txt_____
 
@@ -256,7 +259,7 @@ int main()
 		if (fst.is_open()) {
 
 			// запись ФИО студента
-			fst << "ФИО" << endl;
+			fst << student << endl;
 
 			// запись основных вопросов
 			for (int i = 0; i < mainQuests.size(); i++) {
