@@ -304,7 +304,7 @@ int main(int argc, char** argv)
 
 		// вывод в консоль вопросов
 		for (int i = 0; i < mainQuests.size(); i++) {
-			cout << (i + 1) + ") " << mainQuests[i] << endl;
+			cout << to_string(i + 1) + ") " << mainQuests[i] << endl;
 		}
 		cout << "дополнительные вопросы 3) 4) объявляются экзаменатором после ответа на вопросы 1) 2)" << endl;
 
