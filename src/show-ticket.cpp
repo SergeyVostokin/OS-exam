@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 
-string const dataPath = "..\\data\\";
+string const dataPath = "../data/";
 int const studentData = 5;
 
 vector<int> findIndexNode(vector<string> arr, string node) {
@@ -49,7 +49,9 @@ int main()
 
 	string pathTickets = dataPath + "tickets.txt";
 
-	string studentName = "ФИО";
+	cout << "Введите ФИО на латинице:" << endl;
+	string studentName;
+	cin >> studentName;
 
 	vector<string> filesRows = readFile(pathTickets);
 
