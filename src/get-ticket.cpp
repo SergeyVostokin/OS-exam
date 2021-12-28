@@ -81,7 +81,7 @@ int main(int argc, char** argv)
 
 	string file = argv[1];
 
-	string pathName = path + file;
+	string pathName = /*path + */ file;
 	string pathFreeBlitz = path + "free-blitz.txt";
 	string pathFreeQuests = path + "free-quests.txt";
 	string pathQuests = path + "quests.txt";
