@@ -3,6 +3,8 @@
 #conda install -c conda-forge xeus-cling
 mamba install -y -c conda-forge xeus-cling
 
+git clone https://github.com/curl/curl.git
+
 cd ~/src
 g++ get-ticket.cpp  -o get-ticket
 g++ show-ticket.cpp -o show-ticket
